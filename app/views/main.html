@@ -11,19 +11,19 @@
         <button type="button" class="btn btn-default">...</button>
       </div>
     </div> -->
-    <h4>MysqlAccount</h4>
+    <h4>SQL <small>{{account.name}}</small></h4>
   </div>
   <div class="row">
     <div class="panel panel-default">
       <div class="panel-heading">
         <div class="pull-right">
           <div class="btn-group" role="group">
-            <button type="button" class="btn btn-primary">Run</button>
+            <button type="button" class="btn btn-primary" ng-click="run()">Run</button>
           </div>
         </div>
         <h5>Query</h5>
       </div>
-      <textarea class="form-control myTextArea" rows="10">{{out.output}}</textarea>
+      <textarea class="form-control myTextArea" rows="10" ng-model="in.query"></textarea>
     </div>
   </div>
   <!-- Default panel contents -->
@@ -38,7 +38,7 @@
         </div>
         <h5>Result</h5>
       </div>
-      <textarea class="form-control myTextArea" rows="10">{{out.output}}</textarea>
+      <textarea class="form-control myTextArea" rows="10">{{out.result}}</textarea>
     </div>
   </div>
 </div>

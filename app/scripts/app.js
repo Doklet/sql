@@ -1,15 +1,7 @@
 'use strict';
 
-/**
- * @ngdoc overview
- * @name sqlApp
- * @description
- * # sqlApp
- *
- * Main module of the application.
- */
-angular
-  .module('sqlApp', [
+
+angular.module('sqlApp', [
     'ngAnimate',
     'ngCookies',
     'ngResource',
@@ -17,7 +9,7 @@ angular
     'ngSanitize',
     'ngTouch'
   ])
-  .config(function ($routeProvider) {
+  .config(function($routeProvider) {
     $routeProvider
       .when('/', {
         templateUrl: 'views/main.html',
@@ -27,3 +19,7 @@ angular
         redirectTo: '/'
       });
   });
+
+angular.module('sqlApp').config(function($httpProvider) {
+  $httpProvider.interceptors.push('AuthInterceptor');
+});
