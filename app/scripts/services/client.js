@@ -2,10 +2,11 @@
 
 
 angular.module('sqlApp')
-  .service('Client', function () {
+  .service('Client', function() {
 
     var _sessionId;
     var _account;
+    var _doclets;
 
     this.getSessionId = function() {
       return _sessionId;
@@ -21,6 +22,14 @@ angular.module('sqlApp')
 
     this.setAccount = function(account) {
       _account = account;
+    };
+
+    this.setDoclets = function(doclets) {
+      _doclets = doclets;
+    };
+
+    this.getDoclets = function() {
+      return _doclets;
     };
 
   });
