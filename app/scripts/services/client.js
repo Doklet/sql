@@ -1,10 +1,10 @@
 'use strict';
 
-
 angular.module('sqlApp')
   .service('Client', function() {
 
     var _sessionId;
+    var _docletId;
     var _account;
     var _doclets;
 
@@ -14,6 +14,16 @@ angular.module('sqlApp')
 
     this.setSessionId = function(sessionId) {
       _sessionId = sessionId;
+    };
+
+    this.setDocletId = function(docletId) {
+      if (docletId !== undefined) {
+        _docletId = docletId;
+      }
+    };
+
+    this.getDocletId = function() {
+      return _docletId;
     };
 
     this.getAccount = function() {

@@ -2,7 +2,8 @@
 
 
 angular.module('sqlApp')
-  .controller('MainCtrl', function($scope, $window, $location, Client, AccountService, PipeService, DocletService) {
+  .controller('MainCtrl', function($scope, $window, $location,
+    Client, AccountService, PipeService, DocletService, AutoSaveService) {
 
     $scope.FORMAT = {
       TEXT: 0,
@@ -23,6 +24,13 @@ angular.module('sqlApp')
 
     if (Client.getAccount() === undefined) {
 
+      // Store doclet id
+      var docletId = $location.search().docletId;
+      if (docletId !== undefined) {
+        Client.setDocletId($window.unescape(docletId));
+      }
+
+      // Store session id
       var sessionId = $location.search().token;
       if (sessionId !== undefined) {
         Client.setSessionId($window.unescape(sessionId));
@@ -34,6 +42,15 @@ angular.module('sqlApp')
         .success(function(account) {
           Client.setAccount(account);
           $scope.account = account;
+
+          // Fetch any autosave
+          AutoSaveService.getAutoSave(account)
+            .success(function(autosave) {
+              $scope.in.query = autosave.query;
+            })
+            .error(function() {
+              // can happen!
+            });
         })
         .error(function() {
           $scope.error = 'Failed to fetch account';
@@ -93,7 +110,7 @@ angular.module('sqlApp')
       // Execute the pipe with the provided parameters
       var commands = 'sql --account="' + $scope.account.name + '"';
       commands += ' --query="' + $scope.in.query + '"';
-      
+
       var cmd = 'brick --name=New --cmds="' + $window.btoa(commands) + '" --bricksid=' + doclet.id;
 
       // Set the type depending on selected output view
@@ -114,7 +131,19 @@ angular.module('sqlApp')
           $scope.info = undefined;
           $scope.error = 'Failed to save brick';
         });
+    };
 
+    $scope.autoSave = function() {
+
+      var account = Client.getAccount();
+
+      AutoSaveService.autoSave(account, $scope.in.query)
+        .success(function() {
+          // Ignore any result
+        })
+        .error(function() {
+          // Ignore any error
+        });
     };
 
   });
