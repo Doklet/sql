@@ -5,24 +5,34 @@ angular.module('sqlApp')
   .controller('MainCtrl', function($scope, $window, $location,
     Client, AccountService, PipeService, DocletService, AutoSaveService) {
 
+    // Consts
     $scope.FORMAT = {
       TEXT: 0,
       TABLE: 1
     };
 
-    $scope.account = undefined;
-
-    $scope.in = {
-      query: undefined
-    };
-
-    $scope.out = {
-      processing: false,
-      format: $scope.FORMAT.TEXT,
-      result: undefined
-    };
-
     if (Client.getAccount() === undefined) {
+
+      // Store the main scope
+      //Client.setMainScope($scope);
+
+      // Setup default values
+      // $scope.account = undefined;
+
+      // $scope.in = {
+      //   query: undefined
+      // };
+
+      // $scope.out = {
+      //   processing: false,
+      //   format: $scope.FORMAT.TEXT,
+      //   result: undefined
+      // };
+
+      var mainScope = Client.getMainScope();
+
+      $scope.in = mainScope.in;
+      $scope.out = mainScope.out;
 
       // Store doclet id
       var docletId = $location.search().docletId;
@@ -65,8 +75,23 @@ angular.module('sqlApp')
           $scope.info = undefined;
           $scope.error = 'Failed to fetch doclets';
         });
+
+    } else {
+
+      // Get the current main scope
+      var currentScope = Client.getMainScope();
+
+      // Restore the scope
+      $scope.account = Client.getAccount();
+      $scope.doclets = Client.getDoclets();
+      $scope.in = currentScope.in;
+      $scope.out = currentScope.out;
+
     }
 
+    $scope.gotoSettings = function() {
+      $location.path('/settings');
+    };
 
     $scope.keys = function(obj) {
       return obj ? Object.keys(obj) : [];
@@ -81,6 +106,11 @@ angular.module('sqlApp')
       return false;
     };
 
+    $scope.buildCommands = function(account) {
+
+      return 'mysql --account="' + account.name + '" --tunnel | os | csv -t';
+    };
+
     $scope.run = function() {
 
       $scope.info = undefined;
@@ -88,7 +118,7 @@ angular.module('sqlApp')
 
       $scope.out.processing = true;
 
-      var commands = 'sql --account="' + $scope.account.name + '"';
+      var commands = $scope.buildCommands($scope.account);
 
       PipeService.execute(commands, $scope.in.query)
         .success(function(response) {

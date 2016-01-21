@@ -11,7 +11,9 @@
         <button type="button" class="btn btn-default">...</button>
       </div>
     </div> -->
-    <h4>SQL <small>{{account.name}}</small></h4>
+    <h4>SQL <small>{{account.name}}</small>
+      <span class="pull-right" ng-click="gotoSettings()"><a>Settings</a></span>
+    </h4>
   </div>
   <div class="row">
     <div class="panel panel-default">
@@ -60,15 +62,15 @@
         <div ng-switch-when="1">
           <!-- TABLE -->
           <div class="table-responsive" ng-if="isTableOutput() == true">
-            <table class="table table-condensed table-hover">
+            <table class="table table-condensed table-hover compact-table">
               <thead>
                 <tr>
-                  <td ng-repeat="key in keys(out.result[0]) | filter:'!$$'"> {{key}} </td>
+                  <td ng-repeat="key in keys(out.result[0]) | filter:'!$$'"> <small><strong>{{key}}</strong></small> </td>
                 </tr>
               </thead>
               <tbody>
                 <tr ng-repeat-start="item in out.result | filter:searchRows" ng-init="item.$$expanded=false" ng-click="item.$$expanded=!item.$$expanded" ng-class="{ 'active' : item.$$expanded == true }">
-                  <td ng-repeat="key in keys(item) | filter:'!$$'"> {{ item[key] | limitTo : 50 }} </td>
+                  <td ng-repeat="key in keys(item) | filter:'!$$'"> <small>{{ item[key] | limitTo : 50 }}</small> </td>
                 </tr>
                 <tr ng-repeat-end="" ng-if="item.$$expanded">
                   <!-- Need to remove the $$ parameters from the length ? -->

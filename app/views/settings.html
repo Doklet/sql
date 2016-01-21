@@ -1,0 +1,22 @@
+<div class="container">
+  <div class="alert alert-danger" ng-show="error!=undefined">
+    <button type="button" class="close" ng-click="error=undefined"><span>&times;</span>
+    </button>
+    {{error}}
+  </div>
+  <div class="alert alert-info alert-dismissible" ng-show="info!=undefined">{{info}}</div>
+  <div class="page-header">
+    <!--     <div class="pull-right">
+      <div class="btn-group" role="group">
+        <button type="button" class="btn btn-default">...</button>
+      </div>
+    </div> -->
+    <h4>SQL <small>{{account.name}}</small>
+      <span class="pull-right" ng-click="done()"><a>Done</a></span>
+    </h4>
+  </div>
+  <div class="row">
+	<p>Hello</p>   
+  </div>
+
+</div>

@@ -3,6 +3,17 @@
 angular.module('sqlApp')
   .service('Client', function() {
 
+    var _mainScope = { 
+      in : {
+        query: undefined
+      },
+      out: {
+        processing: false,
+        format: 0, // text
+        result: undefined
+      }
+    };
+
     var _sessionId;
     var _docletId;
     var _account;
@@ -40,6 +51,10 @@ angular.module('sqlApp')
 
     this.getDoclets = function() {
       return _doclets;
+    };
+
+    this.getMainScope = function() {
+      return _mainScope;
     };
 
   });
